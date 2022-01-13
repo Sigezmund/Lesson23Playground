@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.teachmeskills.lesson23playground.video.Video
+import com.teachmeskills.lesson23playground.media.Video
 
 class ListViewFragment : Fragment() {
     override fun onCreateView(
@@ -37,7 +37,7 @@ class ListViewFragment : Fragment() {
         val adapter = VideosAdapter()
         listView.adapter = adapter
         viewModel.videosLiveData.observe(viewLifecycleOwner) { videos ->
-            adapter.videos = videos
+//            adapter.videos = videos
             swipeRefresh.isRefreshing = false
 
         }
