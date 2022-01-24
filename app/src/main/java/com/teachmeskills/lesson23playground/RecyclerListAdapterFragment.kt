@@ -1,11 +1,11 @@
 package com.teachmeskills.lesson23playground
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.teachmeskills.lesson23playground.media.Audio
 import com.teachmeskills.lesson23playground.media.Media
-import com.teachmeskills.lesson23playground.media.Video
+import com.teachmeskills.lesson23playground.media.VideoEntity
 
 class RecyclerListAdapterFragment : Fragment() {
     override fun onCreateView(
@@ -31,8 +31,9 @@ class RecyclerListAdapterFragment : Fragment() {
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val swipeRefresh = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)
+        val errorView = view.findViewById<View>(R.id.errorMessage)
         swipeRefresh.setOnRefreshListener {
-            viewModel.onRefresh()
+            viewModel.refresh()
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler)
@@ -45,10 +46,17 @@ class RecyclerListAdapterFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         viewModel.videosLiveData.observe(viewLifecycleOwner) { videos ->
-            swipeRefresh.isRefreshing = false
             adapter.submitList(videos) {
                 recyclerView.scrollToPosition(0)
             }
+        }
+
+        viewModel.isRefreshing.observe(viewLifecycleOwner) { isRefreshing ->
+            swipeRefresh.isRefreshing = isRefreshing
+
+        }
+        viewModel.isErrorMessageVisible.observe(viewLifecycleOwner) { isError ->
+            errorView.isVisible = isError
         }
     }
 }
@@ -70,7 +78,7 @@ class RecyclerListAdapter(val clickListener: (Media) -> Unit) :
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         return when (item) {
-            is Video -> R.layout.video_list_item
+            is VideoEntity -> R.layout.video_list_item
             is Audio -> R.layout.audio_list_item
             else -> 0
         }
@@ -98,7 +106,7 @@ class RecyclerListAdapter(val clickListener: (Media) -> Unit) :
         val item = getItem(position)
 
         when (holder) {
-            is VideoViewHolder -> holder.video = item as Video
+            is VideoViewHolder -> holder.video = item as VideoEntity
             is AudioViewHolder -> holder.audio = item as Audio
         }
 

@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.teachmeskills.lesson23playground.media.Video
+import com.teachmeskills.lesson23playground.media.VideoEntity
 
 class ListViewFragment : Fragment() {
     override fun onCreateView(
@@ -31,7 +31,7 @@ class ListViewFragment : Fragment() {
 
         val swipeRefresh = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)
         swipeRefresh.setOnRefreshListener {
-            viewModel.onRefresh()
+            viewModel.refresh()
         }
 
         val adapter = VideosAdapter()
@@ -46,7 +46,7 @@ class ListViewFragment : Fragment() {
 
 class VideosAdapter() : BaseAdapter() {
 
-    var videos: List<Video> = emptyList()
+    var videos: List<VideoEntity> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()

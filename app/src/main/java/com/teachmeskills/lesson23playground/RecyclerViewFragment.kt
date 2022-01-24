@@ -15,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.teachmeskills.lesson23playground.media.Audio
 import com.teachmeskills.lesson23playground.media.Media
-import com.teachmeskills.lesson23playground.media.Video
+import com.teachmeskills.lesson23playground.media.VideoEntity
 
 class RecyclerViewFragment : Fragment() {
     override fun onCreateView(
@@ -32,7 +32,7 @@ class RecyclerViewFragment : Fragment() {
 
         val swipeRefresh = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)
         swipeRefresh.setOnRefreshListener {
-            viewModel.onRefresh()
+            viewModel.refresh()
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler)
@@ -63,7 +63,7 @@ class RecyclerAdapter(val clickListener: (Media) -> Unit) :
     override fun getItemViewType(position: Int): Int {
         val item = media[position]
         return when (item) {
-            is Video -> R.layout.video_list_item
+            is VideoEntity -> R.layout.video_list_item
             is Audio -> R.layout.audio_list_item
             else -> 0
         }
@@ -91,7 +91,7 @@ class RecyclerAdapter(val clickListener: (Media) -> Unit) :
         val item = media[position]
 
         when (holder) {
-            is VideoViewHolder -> holder.video = item as Video
+            is VideoViewHolder -> holder.video = item as VideoEntity
             is AudioViewHolder -> holder.audio = item as Audio
         }
 
@@ -118,7 +118,7 @@ class VideoViewHolder(view: View, click: (Media) -> Unit) : RecyclerView.ViewHol
     }
 
 
-    var video: Video? = null
+    var video: VideoEntity? = null
         set(value) {
             field = value
             textView.text = value?.title
