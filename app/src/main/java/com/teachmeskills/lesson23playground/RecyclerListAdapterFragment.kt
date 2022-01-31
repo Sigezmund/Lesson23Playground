@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +39,14 @@ class RecyclerListAdapterFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler)
 
         val clickListener: (Media) -> Unit = {
-            Toast.makeText(requireContext(), "Click ${it.title}", Toast.LENGTH_SHORT).show()
+            (it as? VideoEntity)?.let {
+                val fragment = VideoDetailsFragment.newInstance(it)
+                parentFragmentManager
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.fragmentContainer, fragment)
+                    .commit()
+            }
         }
         val adapter = RecyclerListAdapter(clickListener)
         recyclerView.adapter = adapter
@@ -57,6 +64,14 @@ class RecyclerListAdapterFragment : Fragment() {
         }
         viewModel.isErrorMessageVisible.observe(viewLifecycleOwner) { isError ->
             errorView.isVisible = isError
+        }
+    }
+
+    companion object {
+        fun newInstance(value: String): RecyclerListAdapterFragment {
+            return RecyclerListAdapterFragment().apply {
+                arguments = bundleOf("key" to value)
+            }
         }
     }
 }

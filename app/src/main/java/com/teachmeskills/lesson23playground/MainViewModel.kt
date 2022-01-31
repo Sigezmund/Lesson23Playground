@@ -13,7 +13,7 @@ import java.lang.Exception
 
 class MainViewModel : ViewModel() {
 
-    private val contentRepository = Retrofit2ContentRepository()
+    private val contentRepository = OkhttpContentRepository()
     private val scope = CoroutineScope(Dispatchers.Main)
     val videosLiveData = MutableLiveData<List<Media>>()
     val isRefreshing = MutableLiveData<Boolean>()
