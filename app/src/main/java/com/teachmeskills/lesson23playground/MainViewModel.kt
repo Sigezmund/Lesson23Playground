@@ -2,7 +2,8 @@ package com.teachmeskills.lesson23playground
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.teachmeskills.lesson23playground.data.ContentRepository
+import com.teachmeskills.lesson23playground.data.OkhttpContentRepository
+import com.teachmeskills.lesson23playground.data.Retrofit2ContentRepository
 import com.teachmeskills.lesson23playground.media.Media
 import kotlinx.coroutines.*
 import java.lang.Exception
@@ -12,7 +13,7 @@ import java.lang.Exception
 
 class MainViewModel : ViewModel() {
 
-    private val contentRepository = ContentRepository()
+    private val contentRepository = Retrofit2ContentRepository()
     private val scope = CoroutineScope(Dispatchers.Main)
     val videosLiveData = MutableLiveData<List<Media>>()
     val isRefreshing = MutableLiveData<Boolean>()

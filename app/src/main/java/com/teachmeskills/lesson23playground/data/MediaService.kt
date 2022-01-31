@@ -1,13 +1,12 @@
 package com.teachmeskills.lesson23playground.data
 
 import retrofit2.http.GET
+import retrofit2.http.Path
+
 
 interface MediaService {
 
-    @GET(URL)
-    suspend fun loadVideos(): List<VideoResponseDTO>
+    @GET("s/{key}/VideoList.json?dl=1")
+    suspend fun loadMedia(@Path("key") param: String): VideoResponseDTO
 
-    companion object {
-        private const val URL = "https://www.dropbox.com/s/wfnm97sblyp3anj/VideoList.json?dl=1"
-    }
 }
