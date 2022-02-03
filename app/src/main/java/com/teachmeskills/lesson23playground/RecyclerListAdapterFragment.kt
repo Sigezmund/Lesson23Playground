@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.teachmeskills.lesson23playground.data.Retrofit2ContentRepository
+import com.teachmeskills.lesson23playground.data.database.AppDatabase
+import com.teachmeskills.lesson23playground.extensions.getViewModel
 import com.teachmeskills.lesson23playground.media.Audio
 import com.teachmeskills.lesson23playground.media.Media
 import com.teachmeskills.lesson23playground.media.VideoEntity
@@ -28,7 +30,9 @@ class RecyclerListAdapterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        val viewModel = getViewModel {
+            MainViewModel(Retrofit2ContentRepository(AppDatabase.build(requireContext())))
+        }
 
         val swipeRefresh = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefresh)
         val errorView = view.findViewById<View>(R.id.errorMessage)
