@@ -1,6 +1,7 @@
 package com.teachmeskills.lesson23playground.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.teachmeskills.lesson23playground.media.VideoEntity
@@ -14,6 +15,6 @@ interface VideoDao {
     @Query("SELECT * FROM VideoEntity")
     fun getVideos(): List<VideoEntity>
 
-    @DELETE
+    @Delete
     fun delete(video: VideoEntity)
 }
